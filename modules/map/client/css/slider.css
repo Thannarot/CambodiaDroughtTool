@@ -1,0 +1,132 @@
+.sliderContainer {
+    height: 5em;
+    background-color: rgb(238, 238, 238);
+    z-index: 400;
+    position: absolute;
+    width: 60%;
+    margin-left: 20%;
+    bottom: 30px;
+    font-size: 11px;
+}
+
+.datePickerSlider {
+    position: relative;
+    width: 80%;
+    margin-left: 4%;
+    bottom: -3.5em;
+    border-color: #ddd;
+}
+
+.slide-backward {
+	position: relative;
+    margin-right: 1%;
+    float: right;
+    margin-top: 1%;
+}
+
+.slide-forward {
+	position: relative;
+    margin-right: 3%;
+    float: right;
+    margin-top: 1%;
+}
+
+/*Slider*/
+
+.noUi-marker {
+	background: black;
+	margin-top: -2px;
+}
+
+.noUi-pips-horizontal {
+	color: rgb(0, 0, 139);
+	margin-top: -3.8em;
+	font-size: 1em;
+	font-weight: bold;
+}
+
+.noUi-horizontal {
+	height: 8px;
+}
+
+.noUi-handle-lower .noUi-tooltip {
+	bottom: 55px;
+    height: 2em;
+    background-color: rgb(255, 248, 220);
+    font-weight: bold;
+    font-size: medium;
+}
+
+.uitooltip-input {
+	width: 100px;
+    text-align: center;
+    border: none;
+    height: 15px;
+    background-color: #fffee2;
+    font-size: 12px;
+}
+
+
+.noUi-horizontal .noUi-handle-lower .noUi-tooltip:after {
+	content:"";
+    display:block;
+    position:absolute;
+    width:8px;
+    height:8px;
+    background:#fffee2;
+    z-index:2;
+    bottom:0;
+    left:50%;
+    -webkit-transform:translate(-50%,50%) rotate(45deg);
+    transform:translate(-50%,50%) rotate(45deg);
+    border-width:0 1px 1px 0;
+    border-color:transparent #f0f0ed #f0f0ed transparent;
+    border-style:solid
+}
+
+.noUi-horizontal .noUi-handle {
+	width: 20px;
+	height: 20px;
+	left: -20px;
+	top: -7px;
+	border-radius: 50%;
+}
+
+.input-tooltip {
+	position: absolute;
+	top: 0;
+	left: 0;
+	max-width: 100px;
+	border: none;
+	height: 30px;
+	padding: 5px;
+	box-sizing: border-box;
+	text-align: center;
+}
+
+.noUi-handle:after, .noUi-handle:before, .noUi-handle:after, .noUi-handle:after {
+	display: none;
+}
+
+.sliderContainer .btn{
+    display: inline-block;
+    padding: 3px 6px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+/*End SLider*/
