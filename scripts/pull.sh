@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cd /home/rdcyis
+cd /home/cdis
 git reset --hard HEAD
 git pull
 gulp build
