@@ -271,19 +271,19 @@
 		menus: [
 			{
 				'name': 'HOW_TO_USE',
-				'url': 'https://goo.gl/rxeaKN',
+				'url': 'https://docs.google.com/document/d/1WfvvC4onQQXOhtv6i1BCJ7y7T6a3kyj-H5mX4JaoAK4/edit?usp=sharing',
 				'show': false,
 				'target': '_blank'
 			},
 			{
 				'name': 'DOCUMENT',
-				'url': 'http://bit.ly/TechnicalDocsRDCYIS',
+				'url': 'https://docs.google.com/document/d/1Sf8t7rHZkhew0MVxjrnOkIDaluGvcrrKIUV1qsrAfpg/edit?usp=sharing',
 				'show': true,
 				'target': '_blank'
 			},
 			{
 				'name': 'FEEDBACK',
-				'url': 'https://goo.gl/forms/P2Lc5yBOOshT5uem1',
+				'url': 'https://docs.google.com/forms/d/1zTbpQB1bFIULHOvY2G9P2llQKVFjH08NbGLDqiuXmto/edit?usp=sharing',
 				'show': true,
 				'target': '_blank'
 			}
@@ -353,6 +353,26 @@
 				'text': 'none'
 			},
 		],
+		partnerspopup: [
+			{
+				'alt': 'Ministry of Agricultural, Forestry and Fisheries',
+				'url': 'https://web.maff.gov.kh/',
+				'src': '/modules/core/client/img/maff.png',
+				'className': 'maff-popup'
+			},
+			{
+				'alt': 'FAO',
+				'url': 'http://www.fao.org/home/en/',
+				'src': '/modules/core/client/img/fao.png',
+				'className': 'fao-popup'
+			},
+			{
+				'alt': 'Asian Disaster Preparedness Center',
+				'url': 'http://www.adpc.net/',
+				'src': 'https://servir.adpc.net/themes/svmk/images/optimized/partner-adbc.png',
+				'className': 'adpc-popup'
+			},
+		],
 		partnersFooter: [
 			{
 				'alt': 'Spatial Infomatics Group',
@@ -387,6 +407,14 @@
 			{
 				'value': 'admin2',
 				'name': 'ADMIN_2'
+			},
+			{
+				'value': 'battambang',
+				'name': 'Battambang'
+			},
+			{
+				'value': 'banteay',
+				'name': 'Banteay Mean Cheay'
 			},
 			// {
 			// 	'value': '',

@@ -8,6 +8,7 @@
 		var legend = settings.legend;
 		$scope.areaFilter = {};
 		$scope.areaFilter.options = settings.areaFilterOptions;
+		$scope.partners = settings.partnerspopup;
 		var getAreaFilterDefault = function () {
 			for (var i in $scope.areaFilter.options) {
 				var option = $scope.areaFilter.options[i];
@@ -482,16 +483,13 @@
 			}
 
 			areaFilterSlider = $('#areaFilterSlider').slider({
-				formatter: function(value) {
-					return 'Opacity: ' + value;
-				},
-				tooltip_position: 'top'
 			}).on('slideStart', function (event) {
 				$scope.areaFilterOpacityValue = event.value;
 			}).on('slideStop', function (event) {
 				var _value = event.value;
 				if (_value !== $scope.areaFilterOpacityValue) {
 					layer.setStyle({fillOpacity: _value});
+					$("#opacity-area-val").text(_value*100);
 				}
 			});
 			$scope.areaFilterLayer = layer;
@@ -527,7 +525,7 @@
 		// Initialize the Map
 		var map = L.map('map', {
 			center: [12.765819, 104.343595],
-			layers: [Esri_WorldImagery],
+			layers: [Esri_WorldTopoMap],
 			minZoom: 4,
 			zoom: 7,
 			zoomControl: false
@@ -555,7 +553,7 @@
 			$scope.selectedLayerData = { 'from': 'basin', 'gid': 1 };
 			//layer.bringToFront();
 			layer.setStyle({
-				'color': 'black'
+				'color': 'yellow'
 			});
 			$timeout(function () { addAreaFilter(layer); });
 		};
@@ -576,9 +574,9 @@
 					}
 
 					$scope.countryGeojson = L.geoJson(data, {
-						onEachFeature: function (feature, layer) {
-							layer.bindPopup(feature.properties.NAME);
-						}
+						// onEachFeature: function (feature, layer) {
+						// 	layer.bindPopup(feature.properties.NAME);
+						// }
 					}).on('click', function (e) {
 						var layer = e.layer;
 						if ($scope.areaFilterLayer) {
@@ -588,7 +586,7 @@
 						$scope.selectedLayerData = { 'from': 'country', 'name': layer.feature.properties.NAME, 'gid': layer.feature.properties.gid };
 						layer.bringToFront();
 						layer.setStyle({
-							'color': 'black'
+							'color': 'yellow'
 						});
 						$timeout(function () { addAreaFilter(layer); });
 					});
@@ -620,7 +618,7 @@
 						$scope.selectedLayerData = { 'from': 'admin1', 'country': layer.feature.properties.country, 'gid': layer.feature.properties.gid };
 						layer.bringToFront();
 						layer.setStyle({
-							'color': 'black'
+							'color': 'yellow'
 						});
 						$timeout(function () { addAreaFilter(layer); });
 					});
@@ -652,7 +650,7 @@
 						$scope.selectedLayerData = { 'from': 'admin2', 'country': layer.feature.properties.country, 'gid': layer.feature.properties.gid };
 						layer.bringToFront();
 						layer.setStyle({
-							'color': 'black'
+							'color': 'yellow'
 						});
 						$timeout(function () { addAreaFilter(layer); });
 					});
@@ -662,6 +660,71 @@
 					}
 				});
 		};
+
+		$scope.loadBattambangGeoJSON = function (load) {
+			$scope.showLoader = true;
+			if (typeof(load) === 'undefined') load = false;
+			// Load Admin Level 2 Geojson
+			$.getJSON('data/battambang.geo.json')
+				.done(function (data, status) {
+
+					if (status === 'success') {
+						$scope.showLoader = false;
+						$scope.$apply();
+					}
+
+					$scope.battambangGeojson = L.geoJson(data)
+					.on('click', function (e) {
+						var layer = e.layer;
+						if ($scope.areaFilterLayer) {
+							e.target.resetStyle($scope.areaFilterLayer);
+						}
+						$scope.selectedLayerData = { 'from': 'admin1', 'country': layer.feature.properties.country, 'gid': layer.feature.properties.gid };
+						layer.bringToFront();
+						layer.setStyle({
+							'color': 'yellow'
+						});
+						$timeout(function () { addAreaFilter(layer); });
+					});
+					map.fitBounds($scope.battambangGeojson.getBounds());
+					if (load) {
+						markerCluster.addLayer($scope.battambangGeojson);
+					}
+				});
+		};
+
+		$scope.loadBanteayGeoJSON = function (load) {
+			$scope.showLoader = true;
+			if (typeof(load) === 'undefined') load = false;
+			// Load Admin Level 2 Geojson
+			$.getJSON('data/banteay.geo.json')
+				.done(function (data, status) {
+
+					if (status === 'success') {
+						$scope.showLoader = false;
+						$scope.$apply();
+					}
+
+					$scope.banteayGeojson = L.geoJson(data)
+					.on('click', function (e) {
+						var layer = e.layer;
+						if ($scope.areaFilterLayer) {
+							e.target.resetStyle($scope.areaFilterLayer);
+						}
+						$scope.selectedLayerData = { 'from': 'admin1', 'country': layer.feature.properties.country, 'gid': layer.feature.properties.gid };
+						layer.bringToFront();
+						layer.setStyle({
+							'color': 'yellow'
+						});
+						$timeout(function () { addAreaFilter(layer); });
+					});
+					map.fitBounds($scope.banteayGeojson.getBounds());
+					if (load) {
+						markerCluster.addLayer($scope.banteayGeojson);
+					}
+				});
+		};
+
 
 		$scope.updateMap = function (apply) {
 
@@ -739,7 +802,7 @@
 				areaFilterSlider = null;
 				$scope.showAreaFilterSlider = false;
 				$scope.areaFilterLayer = null;
-				$scope.selectedLayerData = {};
+				$scope.selectedLayerData = { 'from': 'country', 'name': 'cambodia', 'gid': 5 };
 			}
 
 			if (type === 'country') {
@@ -773,6 +836,28 @@
 					markerCluster.addLayer($scope.adminTwoGeojson);
 				} else {
 					$scope.loadAdminTwoGeoJSON(true);
+				}
+				map.addLayer(markerCluster);
+			} else if (type === 'battambang') {
+				if ($scope.battambangGeojson) {
+					map.fitBounds($scope.battambangGeojson.getBounds());
+					$scope.battambangGeojson.eachLayer(function (layer) {
+						$scope.battambangGeojson.resetStyle(layer);
+					});
+					markerCluster.addLayer($scope.battambangGeojson);
+				} else {
+					$scope.loadBattambangGeoJSON(true);
+				}
+				map.addLayer(markerCluster);
+			} else if (type === 'banteay') {
+				if ($scope.banteayGeojson) {
+					map.fitBounds($scope.banteayGeojson.getBounds());
+					$scope.banteayGeojson.eachLayer(function (layer) {
+						$scope.battambangGeojson.resetStyle(layer);
+					});
+					markerCluster.addLayer($scope.banteayGeojson);
+				} else {
+					$scope.loadBanteayGeoJSON(true);
 				}
 				map.addLayer(markerCluster);
 			} else if (type === 'basin') {
@@ -1259,16 +1344,13 @@
 
 		// Opacity control
 		$('#opacitySlider').slider({
-			formatter: function(value) {
-				return 'Opacity: ' + value;
-			},
-			tooltip_position: 'top'
 		}).on('slideStart', function (event) {
 			$scope.opacityValue = event.value;
 		}).on('slideStop', function (event) {
 			var _value = event.value;
 		    if (_value !== $scope.opacityValue) {
 		    	$scope.shownGeojson.setStyle({fillOpacity: _value});
+				$("#opacity-val").text(_value*100);
 		    }
 		});
 
@@ -1374,6 +1456,15 @@
 				$("#btn-update-map").attr("disabled", false);
 				$("#btn-show-chart").attr("disabled", false);
 			}
+		});
+		$("#application_name").click(function() {
+			$("#supporterModal").removeClass('hide');
+			$("#supporterModal").addClass('show');
+		});
+
+		$(".modal").click(function() {
+			$(".modal").removeClass('show');
+			$(".modal").addClass('hide');
 		});
 
 

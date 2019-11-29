@@ -1,7 +1,7 @@
 /* Global Styles */
 
 body {
-    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: Gill Sans Extrabold, sans-serif;
 }
 
 @media(min-width:768px) {
@@ -97,7 +97,7 @@ body {
 }
 
 .about-table {
-    border-collapse: separate; 
+    border-collapse: separate;
     border-spacing: 1.2em;
 }
 

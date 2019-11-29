@@ -394,7 +394,7 @@ ul {
     width: 40px;
     height: 40px;
     z-index: 20;
-	background-color: lightblue;
+	background-color: #F1BCBC;
 }
 
 .chart-modal-title {
@@ -404,8 +404,19 @@ ul {
 	font-weight: 600;
 }
 
-.disclaimer-content {
+.supporter-modal-title{
+	text-align: center;
+	font-size: 20px;
+	font-weight: 600;
+	color: #333;
+}
+.supporter-content {
     font-size: 13px;
+	text-align: center;
+}
+.supporter-content table{
+	margin-left: 10%;
+	text-align: center
 }
 
 .tooltipmap{position:absolute;background:#fffee2;box-shadow:0 1px 3px rgba(85,85,85,0.25);z-index:1000;margin:0;visibility:hidden;opacity:0;text-transform:uppercase;color:#555;font-weight:400;font-size:12px;line-height:1.25;bottom:100%;text-align:center;padding:6px 8px;white-space:nowrap;pointer-events:none;-webkit-transform:translate(-40%,5px);transform:translate(-40%,5px);}
@@ -446,7 +457,7 @@ button>svg{
     position: absolute;
     display: flex;
     align-items: flex-start;
-    top: 20vh;
+    top: 130px;
     left: 5px;
     z-index: 999;
 }
@@ -458,7 +469,7 @@ button>svg{
 	width: 150px;
 	color: #333;
 	bottom: 160px;
-	z-index: 9999;
+	z-index: 999;
 	position: absolute;
 	right: 15px;
 }
@@ -474,6 +485,7 @@ button>svg{
     width: 330px;
     margin-left: 5px;
     max-height: 440px;
+	overflow-x: hidden;
 }
 
 .map-panel__toggle .map-panel__tabs {
@@ -592,4 +604,25 @@ ul, ol {
 }
 #areaFilterSlider .slider-selection {
     background: rgb(186, 186, 186);
+}
+
+.checkbox-inline, .radio-inline {
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+.tooltip {
+	display: none;
+}
+
+.maff-popup{
+	height: 100px;
+}
+
+.fao-popup{
+	height: 100px;
+}
+
+.adpc-popup{
+	height: 80px;
 }

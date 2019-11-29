@@ -2,9 +2,9 @@
 
 module.exports = {
 	app: {
-		title: 'RDCYIS',
-		description: 'Regional Drought and Crop Yield Information System',
-		keywords: 'postgresql, express, angularjs, node.js',
+		title: 'CDIS',
+		description: 'Cambodia Drought Information System',
+		keywords: 'Cambodia, Drought, Drought Information System, ADPC',
 		googleAnalyticsTrackingID: process.env.GOOGLE_ANALYTICS_TRACKING_ID || 'GOOGLE_ANALYTICS_TRACKING_ID'
 	},
 	port: process.env.PORT || 3000,

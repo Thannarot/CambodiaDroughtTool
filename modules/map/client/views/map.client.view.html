@@ -20,6 +20,37 @@
 		</div>
 	</div>
 
+	<div id="supporterModal" class="modal hide">
+		<div class="modal-container">
+			<div class="modal-background"></div>
+			<div class="modal-window">
+				<!-- <div title="close" class="modal-close close-icon pointer">
+					<svg id="shape-close" viewBox="0 0 25 25">
+						<path d="M 5 19 L 19 5 L 21 7 L 7 21 L 5 19 ZM 7 5 L 21 19 L 19 21 L 5 7 L 7 5 Z"></path>
+					</svg>
+				</div> -->
+				<div class="modal-wrapper custom-scroll">
+					<div class="supporter-modal-title">
+						CAMBODIA DROUGHT INFORMATION SYSTEM
+					</div>
+					<div class="supporter-content" id="disclaimer-body">
+						<p><b>VERSION 1.0</b></p>
+						<p>2019</p>
+						<table style="width:80%">
+						  <tr>
+							 <td ng-repeat="partner in partners"  width="33%">
+								  <a href="[[partner.url]]" target="_blank">
+				                  	<img class="grow img-responsive [[partner.className]]" src="[[partner.src]]" alt="[[partner.alt]]" >
+				                  </a>
+							  </td>
+						  </tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- Alert Container -->
 	<div class="alert alert-dismissible text-center display-none" ng-Class="alertClass" role="alert">
 		<button type="button" class="close" ng-click="closeAlert()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -162,9 +193,9 @@
 		</div>
 
 		<div id="toggle_drought_box" class="map-panel__toggle--panel" style="display: block;">
-			<div class="title">
+			<!-- <div class="title">
 				CAMBODIA DROUGHT INFORMATION
-			</div>
+			</div> -->
 
 			<div class="form-group">
 				<label for="area-filter" class="js-tooltip"
@@ -177,10 +208,11 @@
 						ng-change="adminAreaChange(areaFilter.value)"></select>
 			</div>
 			<div class="form-group" ng-show="showAreaFilterSlider">
-				<label for="areaFilterSlider">Area Filter Layer</label>
+				<label for="areaFilterSlider">Area Filter Opacity</label>
 				<input id="areaFilterSlider" data-slider-id="areaFilterSlider" type="text"
 					   data-slider-min="0" data-slider-max="1" data-slider-step="0.1"
-					   data-slider-value="0.2">
+					   data-slider-value="0.1">
+					   <span> value: </span><span id="opacity-area-val">10</span><span>%</span>
 			</div>
 			<div class="form-group">
 				<label for="index-filter" class="js-tooltip"
@@ -206,9 +238,13 @@
 			<!-- Slider Container -->
 			<div class="opacity-slider leaflet-right" ng-show="showOpacitySlider">
 				<div class="leaflet-control">
-					<div class="form-group float-left" style="margin-top:-20px; width:100%;">
+					<div class="form-group float-left" style="margin-top:-20px; width:300px;">
 						<label for="areaFilterSlider">Opacity</label>
+						<div class="col-9">
+
+						</div>
 						<input id="opacitySlider" data-slider-id="opacitySlider" type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" class="opacity-slider">
+						<span> value: </span><span id="opacity-val">100</span><span>%</span>
 					</div>
 				</div>
 			</div>
@@ -266,9 +302,9 @@
 
 		<!-- Legend Container -->
 		<div id="toggle_legend_box" class="map-panel__toggle--panel--legendbox " ng-show="showLegend">
-			<div class="title">
+			<!-- <div class="title">
 				LEGEND
-			</div>
+			</div> -->
 			<p><b>[[legendParameter | translate]] <br /></b></p>
 			<p>[[legendDate]]</p>
 		</div>
@@ -292,17 +328,17 @@
 			<div class="modal-container">
 				<div class="modal-background"></div>
 				<div class="modal-window ">
-					<div title="close" class="modal-close close-icon pointer">
+					<!-- <div title="close" class="modal-close close-icon pointer">
 						<svg id="shape-close" viewBox="0 0 25 25">
 							<path d="M 5 19 L 19 5 L 21 7 L 7 21 L 5 19 ZM 7 5 L 21 19 L 19 21 L 5 7 L 7 5 Z"></path>
 						</svg>
-					</div>
+					</div> -->
 					<div class="modal-wrapper custom-scroll">
 						<div class="chart-modal-title">
 							Define Area
 						</div>
 						<div class="disclaimer-content">
-							Click on drawn shapes on the map to subscribe to the area.
+							Click on drawn shapes on the map to subscribe to the area.<br>
 							<button class="btn btn-default btn-sm btn-drawtool" id="draw-polygon">
 								<svg stroke="#E74C3C" fill="#E74C3C" viewBox="0 0 700 700" fillColorqxmlns="http://www.w3.org/2000/svg">
 								    <path d="m497.027344 209.589844h-9.8125l-69.691406-119.765625h9.640624c8.269532 0 14.972657-6.703125 14.972657-14.96875v-59.882813c0-8.269531-6.703125-14.972656-14.972657-14.972656h-59.882812c-8.265625 0-14.96875 6.703125-14.96875 14.972656v16.253906h-192.625v-16.253906c0-8.269531-6.703125-14.972656-14.96875-14.972656h-59.882812c-8.269532 0-14.972657 6.703125-14.972657 14.972656v59.882813c0 8.265625 6.703125 14.96875 14.972657 14.96875h7.925781l-69.148438 119.765625h-8.640625c-8.269531 0-14.972656 6.703125-14.972656 14.972656v59.882812c0 8.265626 6.703125 14.96875 14.972656 14.96875h8.640625l70.300781 121.761719h-9.078124c-8.269532 0-14.972657 6.703125-14.972657 14.972657v59.882812c0 8.269531 6.703125 14.96875 14.972657 14.96875h59.882812c8.265625 0 14.96875-6.699219 14.96875-14.96875v-18.253906h192.625v18.253906c0 8.269531 6.703125 14.96875 14.96875 14.96875h59.882812c8.269532 0 14.972657-6.699219 14.972657-14.96875v-59.882812c0-8.269532-6.703125-14.972657-14.972657-14.972657h-10.074218l70.296875-121.761719h9.640625c8.269531 0 14.972656-6.703124 14.972656-14.96875v-59.882812c0-8.269531-6.703125-14.972656-14.972656-14.972656zm-14.96875 29.941406v29.941406h-29.941406v-29.941406zm-99.804688-209.589844h29.941406v29.941406h-29.941406zm-282.449218 0h29.941406v29.941406h-29.941406zm-69.863282 239.53125v-29.941406h29.941406v29.941406zm99.804688 211.585938h-29.941406v-29.941406h29.941406zm282.449218 0h-29.941406v-29.941406h29.941406zm-29.679687-59.882813h-15.234375c-8.265625 0-14.96875 6.703125-14.96875 14.972657v11.6875h-192.625v-11.6875c0-8.269532-6.703125-14.972657-14.96875-14.972657h-16.230469l-70.300781-121.761719h16.667969c8.265625 0 14.96875-6.703124 14.96875-14.96875v-59.882812c0-8.269531-6.703125-14.972656-14.96875-14.972656h-16.667969l69.148438-119.765625h17.382812c8.265625 0 14.96875-6.703125 14.96875-14.96875v-13.6875h192.625v13.6875c0 8.265625 6.703125 14.96875 14.96875 14.96875h15.597656l69.695313 119.765625h-15.429688c-8.265625 0-14.96875 6.703125-14.96875 14.972656v59.882812c0 8.265626 6.703125 14.96875 14.96875 14.96875h15.671875zm0 0"/>
