@@ -468,10 +468,10 @@ button>svg{
 	padding: 10px;
 	width: 150px;
 	color: #333;
-	bottom: 160px;
+	top: 195px;
 	z-index: 999;
 	position: absolute;
-	right: 15px;
+	right: 13px;
 }
 .map-panel__toggle--panel--legendbox p {
 	font-size: 12px;

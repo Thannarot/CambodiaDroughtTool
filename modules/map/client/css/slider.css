@@ -9,6 +9,8 @@
     font-size: 11px;
     border: 1px solid #F1BCBC;
     padding-bottom: 60px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 1px 2px rgba(0,0,0,.7);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 1px 2px rgba(0,0,0,.7);
 }
 
 .datePickerSlider {
@@ -165,5 +167,10 @@
     background-image: none;
     border: 1px solid transparent;
     border-radius: 4px;
+}
+
+.sliderContainer .btn:hover{
+	background-color: #E74C3C;
+    color: #FFF;
 }
 /*End SLider*/
