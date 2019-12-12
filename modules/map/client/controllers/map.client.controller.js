@@ -558,42 +558,6 @@
 
 		var control = new L.Control.Custom().addTo(map);
 
-		/**
-			* Change basemap layer(satellite, terrain, street)
-			*/
-			$('input[type=radio][name=basemap_selection]').change(function(){
-				var selected_basemap = $(this).val();
-				if(selected_basemap === "satellite"){
-					basemapLayer.setUrl('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
-					map.attributionControl.setPrefix('Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community')
-				}else if(selected_basemap === "topo"){
-					basemapLayer.setUrl('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}');
-					map.attributionControl.setPrefix('Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, ' +
-		            'Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community')
-				}
-			});
-
-			/**
-			* Toggle layer visualizing
-			*/
-			$('input[type=checkbox][name=water_toggle]').click(function(){
-				if(this.checked) {
-					var waterStyle = {
-					    "fillColor": "#00008b",
-					    "opacity": 0,
-					    "fillOpacity": 1
-					};
-				    $scope.perennialGeojson.setStyle(waterStyle);
-				} else {
-					var waterStyle = {
-					    "fillColor": "#00008b",
-					    "opacity": 0,
-					    "fillOpacity": 0
-					};
-				    $scope.perennialGeojson.setStyle(waterStyle);
-				}
-			});
-
 
 		// Marker Clusters
 		var markerCluster = L.markerClusterGroup();
@@ -856,7 +820,43 @@
 				});
 		};
 
+		/**
+			* Change basemap layer(satellite, terrain, street)
+			*/
+			$('input[type=radio][name=basemap_selection]').change(function(){
+				var selected_basemap = $(this).val();
+				if(selected_basemap === "satellite"){
+					basemapLayer.setUrl('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
+					map.attributionControl.setPrefix('Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community');
+				}else if(selected_basemap === "topo"){
+					basemapLayer.setUrl('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}');
+					map.attributionControl.setPrefix('Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, ' +
+		            'Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community');
+				}
+			});
 
+			/**
+			* Toggle layer visualizing
+			*/
+			$('input[type=checkbox][name=water_toggle]').click(function(){
+				var waterStyle;
+				if(this.checked) {
+					waterStyle = {
+					    "fillColor": "#00008b",
+					    "opacity": 0,
+					    "fillOpacity": 1
+					};
+				    $scope.perennialGeojson.setStyle(waterStyle);
+				} else {
+					waterStyle = {
+					    "fillColor": "#00008b",
+					    "opacity": 0,
+					    "fillOpacity": 0
+					};
+				    $scope.perennialGeojson.setStyle(waterStyle);
+				}
+			});
+			
 		$scope.updateMap = function (apply) {
 
 			//console.log($scope.timeOptionSelector);
