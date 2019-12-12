@@ -468,7 +468,7 @@ button>svg{
 	padding: 10px;
 	width: 150px;
 	color: #333;
-	top: 195px;
+	top: 165px;
 	z-index: 999;
 	position: absolute;
 	right: 13px;
@@ -484,7 +484,7 @@ button>svg{
     padding: 10px;
     width: 330px;
     margin-left: 5px;
-    max-height: 440px;
+    max-height: calc(100vh - 240px);
 	overflow-x: hidden;
 }
 

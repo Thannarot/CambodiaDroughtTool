@@ -527,9 +527,9 @@
 		map.createPane('waterLayer');
 		map.createPane('admin');
 		map.createPane('indexLayer');
-		map.getPane('waterLayer').style.zIndex = 750;
 		map.getPane('admin').style.zIndex = 650;
-		map.getPane('indexLayer').style.zIndex = 850;
+		map.getPane('indexLayer').style.zIndex = 660;
+		map.getPane('waterLayer').style.zIndex = 670;
 
 		//var layer = L.esri.basemapLayer('Topographic').addTo(map);
 
@@ -856,7 +856,7 @@
 				    $scope.perennialGeojson.setStyle(waterStyle);
 				}
 			});
-			
+
 		$scope.updateMap = function (apply) {
 
 			//console.log($scope.timeOptionSelector);
