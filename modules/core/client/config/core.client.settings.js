@@ -271,19 +271,19 @@
 		menus: [
 			{
 				'name': 'HOW_TO_USE',
-				'url': 'https://docs.google.com/document/d/1WfvvC4onQQXOhtv6i1BCJ7y7T6a3kyj-H5mX4JaoAK4/edit?usp=sharing',
+				'url': 'https://docs.google.com/document/d/1WfvvC4onQQXOhtv6i1BCJ7y7T6a3kyj-H5mX4JaoAK4',
 				'show': false,
 				'target': '_blank'
 			},
 			{
 				'name': 'DOCUMENT',
-				'url': 'https://docs.google.com/document/d/1Sf8t7rHZkhew0MVxjrnOkIDaluGvcrrKIUV1qsrAfpg/edit?usp=sharing',
+				'url': 'https://docs.google.com/document/d/1Sf8t7rHZkhew0MVxjrnOkIDaluGvcrrKIUV1qsrAfpg',
 				'show': true,
 				'target': '_blank'
 			},
 			{
 				'name': 'FEEDBACK',
-				'url': 'https://docs.google.com/forms/d/1zTbpQB1bFIULHOvY2G9P2llQKVFjH08NbGLDqiuXmto/edit?usp=sharing',
+				'url': 'https://docs.google.com/forms/d/1zTbpQB1bFIULHOvY2G9P2llQKVFjH08NbGLDqiuXmto',
 				'show': true,
 				'target': '_blank'
 			}

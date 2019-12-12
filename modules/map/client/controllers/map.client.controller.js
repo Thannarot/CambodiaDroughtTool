@@ -511,34 +511,89 @@
 			}
 		);
 
-		// Base Layers
-        var Esri_WorldTopoMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, ' +
-            'Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
-        });
-
-		// Base Map
-        var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-		});
-
 		// Initialize the Map
 		var map = L.map('map', {
 			center: [12.765819, 104.343595],
-			layers: [Esri_WorldTopoMap],
 			minZoom: 4,
 			zoom: 7,
-			zoomControl: false
+			zoomControl: false,
 		});
 
-        var baseLayers = {
-			//'Grayscale': basemap_mapbox,
-            'Satellite Imagery': Esri_WorldImagery,
-            'Topo Map': Esri_WorldTopoMap
-        };
+		// Base Layers
+		var basemapLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}').addTo(map);
+		map.attributionControl.setPrefix('Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, ' +
+		'Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community');
+
+		map.createPane('waterLayer');
+		map.createPane('admin');
+		map.createPane('indexLayer');
+		map.getPane('waterLayer').style.zIndex = 750;
+		map.getPane('admin').style.zIndex = 650;
+		map.getPane('indexLayer').style.zIndex = 850;
+
+		//var layer = L.esri.basemapLayer('Topographic').addTo(map);
 
         // Control
-        L.control.layers(baseLayers, null, { position: 'topright' }).addTo(map);
+
+		L.Control.Custom = L.Control.Layers.extend({
+			onAdd: function () {
+				this._initLayout();
+				this._addElement();
+				this._update();
+				return this._container;
+			},
+			_addElement: function () {
+				var elements = this._container.getElementsByClassName('leaflet-control-layers-list');
+				var div = L.DomUtil.create('div', 'leaflet-control-layers-overlays', elements[0]);
+				div.innerHTML = '<label><b>Basemap</b></label>'+
+				'<label class="container_radio">Satellite Imagery<input name="basemap_selection" id="satellite" value="satellite" type="radio"></input><span class="checkmark_radio"></span></label>'+
+				'<label class="container_radio">Topo Map<input name="basemap_selection" id="topo" value="topo" type="radio" checked="checked"></input><span class="checkmark_radio"></span></label>'+
+				'<hr>'+
+				'<label><b>Layers</b></label>'+
+				'<ul class="toggles-list">'+
+					'<li class="toggle"><label class="switch_layer"><input  name="water_toggle" id="water_toggle" checked="checked" type="checkbox"><span class="slider_toggle round"></span></label><label>Permanent Water </label></li>'+
+				'</ul>';
+			}
+		});
+
+		var control = new L.Control.Custom().addTo(map);
+
+		/**
+			* Change basemap layer(satellite, terrain, street)
+			*/
+			$('input[type=radio][name=basemap_selection]').change(function(){
+				var selected_basemap = $(this).val();
+				if(selected_basemap === "satellite"){
+					basemapLayer.setUrl('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
+					map.attributionControl.setPrefix('Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community')
+				}else if(selected_basemap === "topo"){
+					basemapLayer.setUrl('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}');
+					map.attributionControl.setPrefix('Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, ' +
+		            'Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community')
+				}
+			});
+
+			/**
+			* Toggle layer visualizing
+			*/
+			$('input[type=checkbox][name=water_toggle]').click(function(){
+				if(this.checked) {
+					var waterStyle = {
+					    "fillColor": "#00008b",
+					    "opacity": 0,
+					    "fillOpacity": 1
+					};
+				    $scope.perennialGeojson.setStyle(waterStyle);
+				} else {
+					var waterStyle = {
+					    "fillColor": "#00008b",
+					    "opacity": 0,
+					    "fillOpacity": 0
+					};
+				    $scope.perennialGeojson.setStyle(waterStyle);
+				}
+			});
+
 
 		// Marker Clusters
 		var markerCluster = L.markerClusterGroup();
@@ -561,6 +616,26 @@
 		// Set the max bounds for the map
 		//map.setMaxBounds(map.getBounds());
 
+		// Load Perennial Level Geojson
+		 $.getJSON('data/perennial.geo.json')
+			.done(function (data, status) {
+
+				if (status === 'success') {
+					$scope.showLoader = false;
+					$scope.$apply();
+				}
+				var waterStyle = {
+				    "fillColor": "#00008b",
+				    "opacity": 0,
+				    "fillOpacity": 1
+				};
+				$scope.perennialGeojson = L.geoJson(data, {
+					style: waterStyle,
+					pane: 'waterLayer'
+				}).addTo(map);
+				map.fitBounds($scope.perennialGeojson.getBounds());
+			});
+
 		$scope.loadCountryGeoJSON = function (load) {
 			$scope.showLoader = true;
 			if (typeof(load) === 'undefined') load = false;
@@ -572,11 +647,16 @@
 						$scope.showLoader = false;
 						$scope.$apply();
 					}
-
+					var countryStyle = {
+						"color": "#000",
+					    "fillColor": "#9999ff",
+					    "opacity": 1,
+						"weight": 1,
+					    "fillOpacity": 0.1
+					};
 					$scope.countryGeojson = L.geoJson(data, {
-						// onEachFeature: function (feature, layer) {
-						// 	layer.bindPopup(feature.properties.NAME);
-						// }
+						style: countryStyle,
+						pane: 'admin'
 					}).on('click', function (e) {
 						var layer = e.layer;
 						if ($scope.areaFilterLayer) {
@@ -586,7 +666,9 @@
 						$scope.selectedLayerData = { 'from': 'country', 'name': layer.feature.properties.NAME, 'gid': layer.feature.properties.gid };
 						layer.bringToFront();
 						layer.setStyle({
-							'color': 'yellow'
+							'color': 'yellow',
+							'weight': 2,
+							'opacity': 1,
 						});
 						$timeout(function () { addAreaFilter(layer); });
 					});
@@ -608,8 +690,18 @@
 						$scope.showLoader = false;
 						$scope.$apply();
 					}
+					var adminOneStyle = {
+						"color": "#000",
+					    "fillColor": "#9999ff",
+					    "opacity": 1,
+						"weight": 1,
+					    "fillOpacity": 0.1
+					};
 
-					$scope.adminOneGeojson = L.geoJson(data)
+					$scope.adminOneGeojson = L.geoJson(data, {
+						style: adminOneStyle,
+						pane: 'admin'
+					})
 					.on('click', function (e) {
 						var layer = e.layer;
 						if ($scope.areaFilterLayer) {
@@ -618,7 +710,9 @@
 						$scope.selectedLayerData = { 'from': 'admin1', 'country': layer.feature.properties.country, 'gid': layer.feature.properties.gid };
 						layer.bringToFront();
 						layer.setStyle({
-							'color': 'yellow'
+							'color': 'yellow',
+							'weight': 2,
+							'opacity': 1,
 						});
 						$timeout(function () { addAreaFilter(layer); });
 					});
@@ -640,17 +734,28 @@
 						$scope.showLoader = false;
 						$scope.$apply();
 					}
-
-					$scope.adminTwoGeojson = L.geoJson(data)
+					var adminTwoStyle = {
+						"color": "#000",
+					    "fillColor": "#9999ff",
+					    "opacity": 1,
+						"weight": 1,
+					    "fillOpacity": 0.1
+					};
+					$scope.adminTwoGeojson = L.geoJson(data, {
+						style: adminTwoStyle,
+						pane: 'admin'
+					})
 					.on('click', function (e) {
 						var layer = e.layer;
 						if ($scope.areaFilterLayer) {
 							e.target.resetStyle($scope.areaFilterLayer);
 						}
 						$scope.selectedLayerData = { 'from': 'admin2', 'country': layer.feature.properties.country, 'gid': layer.feature.properties.gid };
-						layer.bringToFront();
+						layer.bringToBack();
 						layer.setStyle({
-							'color': 'yellow'
+							'color': 'yellow',
+							'weight': 2,
+							'opacity': 1,
 						});
 						$timeout(function () { addAreaFilter(layer); });
 					});
@@ -673,7 +778,18 @@
 						$scope.$apply();
 					}
 
-					$scope.battambangGeojson = L.geoJson(data)
+					var adminStyle = {
+						"color": "#000",
+					    "fillColor": "#9999ff",
+					    "opacity": 1,
+						"weight": 1,
+					    "fillOpacity": 0.1
+					};
+
+					$scope.battambangGeojson = L.geoJson(data, {
+						style: adminStyle,
+						pane: 'admin'
+					})
 					.on('click', function (e) {
 						var layer = e.layer;
 						if ($scope.areaFilterLayer) {
@@ -682,7 +798,9 @@
 						$scope.selectedLayerData = { 'from': 'admin1', 'country': layer.feature.properties.country, 'gid': layer.feature.properties.gid };
 						layer.bringToFront();
 						layer.setStyle({
-							'color': 'yellow'
+							'color': 'yellow',
+							'weight': 2,
+							'opacity': 1,
 						});
 						$timeout(function () { addAreaFilter(layer); });
 					});
@@ -705,7 +823,18 @@
 						$scope.$apply();
 					}
 
-					$scope.banteayGeojson = L.geoJson(data)
+					var adminStyle = {
+						"color": "#000",
+					    "fillColor": "#9999ff",
+					    "opacity": 1,
+						"weight": 1,
+					    "fillOpacity": 0.1
+					};
+
+					$scope.banteayGeojson = L.geoJson(data, {
+						style: adminStyle,
+						pane: 'admin'
+					})
 					.on('click', function (e) {
 						var layer = e.layer;
 						if ($scope.areaFilterLayer) {
@@ -714,7 +843,9 @@
 						$scope.selectedLayerData = { 'from': 'admin1', 'country': layer.feature.properties.country, 'gid': layer.feature.properties.gid };
 						layer.bringToFront();
 						layer.setStyle({
-							'color': 'yellow'
+							'color': 'yellow',
+							'weight': 2,
+							"opacity": 1,
 						});
 						$timeout(function () { addAreaFilter(layer); });
 					});
@@ -1048,6 +1179,7 @@
 						fillColor: color
 					};
 				},
+				pane: 'indexLayer',
 				onEachFeature: function (feature, layer) {
 
 					var value = feature.properties.value,
