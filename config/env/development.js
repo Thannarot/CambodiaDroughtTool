@@ -39,7 +39,7 @@ module.exports = {
 	db: {
 		options: {
 			logging: process.env.DB_LOGGING === 'true' ? console.log : false,
-			host: process.env.DB_HOST || '203.170.246.170',
+			host: process.env.DB_HOST || 'localhost',
 			port: process.env.DB_PORT || '5432'
 		}
 	}

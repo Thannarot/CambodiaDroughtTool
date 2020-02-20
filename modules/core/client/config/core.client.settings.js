@@ -267,7 +267,7 @@
 	];
 
 	angular.module('rheas').constant('settings', {
-		downloadServerURL: 'http://203.170.246.170/',
+		downloadServerURL: 'http://216.218.240.212/',
 		menus: [
 			{
 				'name': 'HOW_TO_USE',
