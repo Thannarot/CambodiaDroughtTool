@@ -41,7 +41,7 @@
     "serve-favicon": "^2.5.0",
     "socket.io": "^2.1.1",
     "swig": "^1.4.2",
-    "validator": "^10.8.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "grunt-concurrent": "^2.0.0",
